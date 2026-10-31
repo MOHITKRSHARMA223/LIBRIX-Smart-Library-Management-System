@@ -15,6 +15,7 @@ LIBRIX is a Java 26 Spring Boot library-management application with server-rende
 - Categories, authors, and publishers management with reference-safe deletion
 - Global server-side search across catalog and member records
 - Super-admin activity logs, system notifications, and library settings
+- Separate student and admin portals with distinct login pages, layouts, dashboards, and role-enforced URL namespaces
 - MySQL schema plus H2 local fallback for development
 - JUnit 5 and Spring MVC integration tests
 
@@ -29,6 +30,8 @@ java -jar target/librix-1.0.0.jar
 ```
 
 Open http://localhost:8080/login.
+
+Portal entry points are `/student/login` and `/admin/login`. Students are routed to the student portal after authentication; staff are routed to the admin portal.
 
 The current machine has JDK 26.0.2 installed. Maven must be installed or its `bin` directory added to `PATH` before running the commands above.
 

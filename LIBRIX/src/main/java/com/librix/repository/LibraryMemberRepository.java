@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface LibraryMemberRepository extends JpaRepository<LibraryMember, Long> {
     Optional<LibraryMember> findByEmailIgnoreCase(String email);
+    Optional<LibraryMember> findByUser_Username(String username);
     long countByActiveTrue();
 }

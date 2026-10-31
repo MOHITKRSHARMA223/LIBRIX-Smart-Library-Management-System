@@ -21,6 +21,11 @@ public class DevelopmentData {
                 books.save(new LibraryBook("9780141439518", "Pride and Prejudice", "Jane Austen", "Literature", 4));
             }
             if (members.count() == 0) members.save(new LibraryMember("Aisha Rahman", "aisha@example.com", "+91 98765 43210"));
+            users.findByUsernameIgnoreCase("student").ifPresent(student -> members.findByUser_Username("student").orElseGet(() -> {
+                LibraryMember profile = new LibraryMember("LIBRIX Student", "student@example.com", "");
+                profile.setUser(student);
+                return members.save(profile);
+            }));
         };
     }
 }

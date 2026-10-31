@@ -8,5 +8,6 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     long countByStatus(LoanStatus status);
     List<Loan> findTop8ByOrderByBorrowedAtDesc();
+    List<Loan> findByMemberIdOrderByBorrowedAtDesc(Long memberId);
     long countByMemberIdAndStatus(Long memberId, LoanStatus status);
 }

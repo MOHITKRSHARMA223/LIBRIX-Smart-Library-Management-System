@@ -24,7 +24,8 @@ class LibriXApplicationTest {
     @Autowired MockMvc mockMvc;
 
     @Test void loginPageIsPublic() throws Exception {
-        mockMvc.perform(get("/login")).andExpect(status().isOk()).andExpect(view().name("auth/login"));
+            mockMvc.perform(get("/student/login")).andExpect(status().isOk()).andExpect(view().name("auth/student-login"));
+            mockMvc.perform(get("/admin/login")).andExpect(status().isOk()).andExpect(view().name("auth/admin-login"));
     }
 
     @Test void dashboardIsSecuredAndRenders() throws Exception {
@@ -48,4 +49,15 @@ class LibriXApplicationTest {
         mockMvc.perform(get("/admin/activity").with(user("admin").roles("SUPER_ADMIN")))
             .andExpect(status().isOk()).andExpect(view().name("admin/activity"));
     }
+
+        @Test void portalsHaveSeparateDashboardsAndPermissions() throws Exception {
+            mockMvc.perform(get("/student/dashboard").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/dashboard"));
+            mockMvc.perform(get("/admin/dashboard").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/dashboard"));
+            mockMvc.perform(get("/admin/dashboard").with(user("student").roles("STUDENT")))
+                .andExpect(status().isForbidden());
+            mockMvc.perform(get("/student/dashboard").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isForbidden());
+        }
 }

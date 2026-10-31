@@ -28,6 +28,12 @@ Updated: 2026-11-01
 - `GET /login`: HTTP 200
 - Running on Java 26.0.2
 - Updated server starts on port 8080
+- Separate student and admin login experiences
+- Role-enforced `/student/**` and `/admin/**` namespaces
+- Separate student dashboard/catalog/my-library layout and CSS
+- Separate admin dashboard/navigation layout and CSS
+- Shared student member profile mapping for private loan history
+- Cross-portal MVC access tests and role-denial tests
 
 ## Remaining
 
@@ -36,6 +42,8 @@ Updated: 2026-11-01
 - Shelf/rack locations and capacity views
 - Lost/damaged book workflow
 - Renewal requests and reading lists/history
+- Student reservations, renewals, wishlist, reading lists, reviews, and profile editing
+- Separate admin acquisitions, inventory, staff, reports, and support workflows
 - Recommendations, reviews, staff management, and permissions UI
 - CSV import/export, barcode/QR generation, backup/restore, help/support
 - Fine/payment entities and staff payment workflow
