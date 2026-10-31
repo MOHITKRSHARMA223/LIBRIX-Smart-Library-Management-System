@@ -1,0 +1,24 @@
+package com.librix.service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+public final class BorrowingRules {
+    public static final int BORROWING_DAYS = 14;
+    public static final int MAX_ACTIVE_LOANS = 3;
+    public static final BigDecimal DAILY_FINE = new BigDecimal("2.00");
+
+    private BorrowingRules() { }
+
+    public static void validateBorrow(boolean memberActive, int activeLoans, boolean bookAvailable) {
+        if (!memberActive) throw new IllegalStateException("Inactive members cannot borrow");
+        if (activeLoans >= MAX_ACTIVE_LOANS) throw new IllegalStateException("Maximum active books reached");
+        if (!bookAvailable) throw new IllegalStateException("Book is unavailable");
+    }
+
+    public static BigDecimal fine(LocalDate dueDate, LocalDate endDate) {
+        long lateDays = Math.max(0, ChronoUnit.DAYS.between(dueDate, endDate));
+        return DAILY_FINE.multiply(BigDecimal.valueOf(lateDays));
+    }
+}
