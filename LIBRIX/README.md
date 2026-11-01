@@ -1,36 +1,176 @@
-# LIBRIX
+# LIBRIX Smart Library Management System
 
 **Smart Library. Smarter Learning.**
 
-LIBRIX is a Java 26 Spring Boot library-management application with server-rendered Thymeleaf pages, CSS-only responsive design, JPA persistence, and role-aware Spring Security authentication.
+LIBRIX is a premium university library platform built with Java 26, Spring
+Boot, Thymeleaf, Spring Security, JPA, MySQL, and CSS. It provides separate
+student and staff portals for library discovery, circulation, account
+management, study planning, seat reservations, notifications, and
+administration.
 
-## Current implementation
+## Technology
 
-- Java 26 and Spring Boot 4 Maven project configuration
-- Thymeleaf HTML and CSS-only responsive interface with no JavaScript
-- BCrypt password hashing and database-backed role-aware authentication
-- JPA repositories and transactional borrowing/return workflows
-- Dashboard counts sourced from the persistence layer
-- Book search, add/delete, member registration, and availability tracking
-- Categories, authors, and publishers management with reference-safe deletion
-- Global server-side search across catalog and member records
-- Super-admin activity logs, system notifications, and library settings
-- Separate student and admin portals with distinct login pages, layouts, dashboards, and role-enforced URL namespaces
-- Student registration with BCrypt passwords, pending approval, account suspension, audit records, and in-app notifications
-- Student wishlist, personalized category-based recommendations, reading progress tracking, reading history, study resources, and notification center
-- Admin account review workspace for approving/suspending student access and monitoring registration activity
-- Original LIBRIX SVG brand mark and library illustration with CSS-only motion, responsive cards, hover states, and no JavaScript
-- Premium dark navy/indigo/purple glass theme shared across student, admin, inventory, and catalog screens, including page transitions and reduced-motion support
-- Non-editable surfaces use the default cursor while actual form controls retain text-entry cursors
-- Student self-service waitlists for unavailable books, with cancellation and reservation status tracking
-- Admin reservation queue, overdue/fine reporting, and downloadable overdue-loan CSV exports
-- Explicit role boundaries for circulation, catalog management, search, reports, and administration
-- MySQL schema plus H2 local fallback for development
-- JUnit 5 and Spring MVC integration tests
+- Java 26
+- Spring Boot 4.0.0
+- Maven
+- Spring MVC and Thymeleaf
+- Spring Security with BCrypt password hashing
+- Spring Data JPA and Hibernate
+- MySQL 8 for production
+- H2 file database for local development and tests
+- JUnit 5, Spring MVC Test, and Spring Security Test
+- CSS-only responsive UI
 
-The application uses H2 file storage when MySQL is not configured. Configure `LIBRIX_DB_URL`, `LIBRIX_DB_USER`, and `LIBRIX_DB_PASSWORD` for MySQL 8.
+## Strict zero-JavaScript policy
 
-## Run
+The application contains no JavaScript, `<script>` tags, `.js` files, or
+`javascript:` URLs under `src/main`.
+
+All interactions use server-side Spring MVC and Thymeleaf forms. UI behavior
+such as animations, hover states, responsive layouts, reduced-motion support,
+and password show/hide controls is implemented with CSS and HTML controls.
+
+## Implemented features
+
+### Shared platform
+
+- Premium dark navy, indigo, and purple glass interface
+- Original LIBRIX SVG logo, icon, and library illustration assets
+- Responsive layouts for desktop, tablet, and mobile
+- CSS page transitions, animated cards, hover effects, focus states, and
+  reduced-motion support
+- High-contrast text and dark hover/focus states across portal tables
+- Non-editable surfaces use the default cursor; form controls retain the text
+  cursor
+- CSRF protection on all state-changing forms
+- Server-side validation and persistence
+- MySQL-compatible schema and seed data
+- H2 local fallback without requiring a separate database server
+
+### Authentication and account management
+
+- Separate student, administrator, and staff login entry points
+- Role-aware authentication success routing
+- BCrypt password hashing
+- Student self-registration at `/student/register`
+- Pending student accounts requiring administrative approval
+- Student account activation and suspension
+- Registration and account activity audit records
+- In-app user notifications for account status changes
+- CSS-only show/hide password eye controls on:
+  - Student login
+  - Administrator login
+  - Staff login
+  - Student registration password
+  - Student registration confirmation password
+- Passwords remain masked by default and form field names/bindings are
+  unchanged
+
+### Student portal
+
+- Personalized student dashboard
+- Borrowed-book, completed-book, reservation, overdue, and notification
+  metrics
+- Category-based book recommendations
+- Server-side catalog search
+- My library view with loans, reservations, wishlist, and reading progress
+- Book reservations/waitlists for unavailable books
+- Reservation cancellation
+- Reading progress tracking from 0 to 100 percent
+- Reading history
+- Wishlist management
+- Study resources and external academic links
+- Personal notification center
+- Study planner with:
+  - Future-date validation
+  - 15-to-480-minute duration validation
+  - Completion/reopen workflow
+  - Deletion
+  - Admin visibility
+- Library seat booking with:
+  - Seat label and date/time selection
+  - 07:00 to 22:00 booking window
+  - End-time validation
+  - Overlap prevention
+  - Cancellation
+  - Admin visibility
+
+### Admin and staff portal
+
+- Separate administration dashboard and navigation
+- Dashboard metrics for users, books, loans, reservations, study plans, and
+  seat bookings
+- Book inventory management
+- Member management
+- Borrowing and return processing
+- Categories, authors, and publishers management
+- Reference-safe catalog deletion
+- Global server-side search
+- Reservation queue management
+- Reservation approval/ready and cancellation workflows
+- Student account approval and suspension
+- Activity log monitoring
+- System notification management
+- Library settings management
+- Study-plan oversight
+- Seat-booking oversight
+- Overdue and fine reporting
+- Downloadable overdue-loan CSV report
+
+## Portal entry points
+
+| Area | URL | Access |
+|---|---|---|
+| Student sign in | `/student/login` | Public |
+| Student registration | `/student/register` | Public |
+| Admin sign in | `/admin/login` | Public |
+| Staff sign in | `/login` | Redirects to the student login entry point |
+| Student dashboard | `/student/dashboard` | `STUDENT` |
+| Student catalog | `/student/catalog` | `STUDENT` |
+| Student library | `/student/my-books` | `STUDENT` |
+| Study planner | `/student/planner` | `STUDENT` |
+| Seat booking | `/student/seats` | `STUDENT` |
+| Study resources | `/student/resources` | `STUDENT` |
+| Student notifications | `/student/notifications` | `STUDENT` |
+| Admin dashboard | `/admin/dashboard` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Books | `/books` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Members | `/members` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Borrowing | `/borrowing` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Admin reservations | `/admin/reservations` | `SUPER_ADMIN` |
+| Student accounts | `/admin/users` | `SUPER_ADMIN` |
+| Study-plan oversight | `/admin/study-plans` | `SUPER_ADMIN` |
+| Seat-booking oversight | `/admin/seat-bookings` | `SUPER_ADMIN` |
+| Activity logs | `/admin/activity` | `SUPER_ADMIN` |
+| Notifications | `/admin/notifications` | `SUPER_ADMIN` |
+| Library settings | `/admin/settings` | `SUPER_ADMIN` |
+| Reports | `/admin/reports` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Overdue CSV | `/admin/reports/overdue.csv` | `SUPER_ADMIN` or `LIBRARIAN` |
+
+## Role boundaries
+
+- `/student/**` requires `ROLE_STUDENT`.
+- `/admin/**` requires `ROLE_SUPER_ADMIN` or `ROLE_LIBRARIAN` at the route
+  level.
+- Account approval, suspension, settings, notifications, activity logs,
+  reservation administration, study-plan oversight, and seat-booking
+  oversight require `ROLE_SUPER_ADMIN`.
+- Books, members, borrowing, catalog references, search, dashboard, and
+  reports are available to `SUPER_ADMIN` and `LIBRARIAN`.
+- Students can only view and change their own wishlist, reading progress,
+  planner items, notifications, reservations, and seat bookings.
+
+## Run locally
+
+### Requirements
+
+- JDK 26
+- Maven 3.9 or newer
+- MySQL 8 if using MySQL instead of the local H2 database
+
+### H2 development mode
+
+The default configuration uses a file-based H2 database at
+`./data/librix`.
 
 ```powershell
 mvn clean test
@@ -38,17 +178,46 @@ mvn package
 java -jar target/librix-1.0.0.jar
 ```
 
-Open http://localhost:8080/login.
+Open:
 
-Portal entry points are `/student/login` and `/admin/login`. Students are routed to the student portal after authentication; staff are routed to the admin portal.
+```text
+http://localhost:8080/student/login
+http://localhost:8080/admin/login
+```
 
-New students can register at `/student/register`. Registrations are inactive until a super administrator approves them from **Admin Portal → Student accounts**.
+The default server port is `8080`. Override it with `LIBRIX_PORT`.
 
-The current machine has JDK 26.0.2 installed. Maven must be installed or its `bin` directory added to `PATH` before running the commands above.
+### MySQL mode
+
+1. Create a MySQL 8 database.
+2. Run `database/schema.sql`.
+3. Run `database/seed.sql` if demo data is required.
+4. Configure the database environment variables.
+5. Start the application.
+
+```powershell
+$env:LIBRIX_DB_URL = "jdbc:mysql://localhost:3306/librix"
+$env:LIBRIX_DB_USER = "librix_user"
+$env:LIBRIX_DB_PASSWORD = "change-me"
+java -jar target/librix-1.0.0.jar
+```
+
+The application reads these properties:
+
+| Environment variable | Default | Purpose |
+|---|---|---|
+| `LIBRIX_PORT` | `8080` | HTTP server port |
+| `LIBRIX_DB_URL` | `jdbc:h2:file:./data/librix` | JDBC URL |
+| `LIBRIX_DB_USER` | `sa` | Database username |
+| `LIBRIX_DB_PASSWORD` | empty | Database password |
+| `LIBRIX_DDL_AUTO` | `update` | Hibernate schema mode |
+
+For production, use a managed migration process and avoid relying on
+`LIBRIX_DDL_AUTO=update`.
 
 ## Demo credentials
 
-The local demo seed creates these accounts:
+The local development seed creates the following accounts:
 
 | Username | Password | Role |
 |---|---|---|
@@ -58,21 +227,104 @@ The local demo seed creates these accounts:
 | `aisha` | `aisha123` | Student |
 | `rohan` | `rohan123` | Student |
 
-These are demo-only credentials. Set `LIBRIX_DEMO_ADMIN_PASSWORD` and
-`LIBRIX_DEMO_STUDENT_PASSWORD` before starting a fresh local database, and replace
-demo credentials before deploying to production.
+These credentials are for local development only. Set
+`LIBRIX_DEMO_ADMIN_PASSWORD` and `LIBRIX_DEMO_STUDENT_PASSWORD` before
+initializing a fresh local database, and replace all demo credentials before
+deployment.
 
-## Database setup
+## Database model
 
-1. Create a MySQL 8 database.
-2. Run `database/schema.sql`, then `database/seed.sql`.
-3. Set the three `LIBRIX_DB_*` environment variables.
-4. Start LIBRIX.
+The canonical MySQL schema is in `database/schema.sql`. It includes tables for:
 
-See [docs/installation.md](docs/installation.md) and [docs/testing.md](docs/testing.md).
+- Users and roles
+- Members
+- Books
+- Categories
+- Authors
+- Publishers
+- Loans
+- Book reservations
+- Wishlist items
+- Reading progress
+- Study resources
+- User notifications
+- Study-plan items
+- Seat bookings
+- Activity logs
+- System notifications
+- Library settings
 
-For an existing MySQL installation, apply `database/migrations/V002__book_reservations.sql` before using student waitlists. Hibernate `update` will also create this additive table during local development.
+The H2 database file under `data/` is local runtime state and may change when
+the application runs.
 
-## Honest scope note
+## Testing
 
-The current web application is implemented and runnable for authentication, dashboard, books, members, borrowing, catalog references, global search, and core administration. Reservations, payments, report exports, and several advanced workflows remain tracked in [PROGRESS.md](PROGRESS.md) and are not presented as complete.
+Run the complete test suite:
+
+```powershell
+mvn test
+```
+
+The current suite covers:
+
+- Spring application context loading
+- Authentication and role-protected routes
+- Student and admin portal access boundaries
+- Planner and seat-booking route protection
+- Domain validation
+- Borrowing rules
+- MVC and Spring Security integration behavior
+
+Build without rerunning tests:
+
+```powershell
+mvn package -DskipTests
+```
+
+## Project layout
+
+```text
+src/main/java/com/librix/
+  config/          Security and development/demo data configuration
+  controller/      Student, admin, catalog, borrowing, report, and auth routes
+  model/           JPA entities and enums
+  repository/      Spring Data repositories
+  service/         Borrowing and reservation business workflows
+
+src/main/resources/
+  templates/       Thymeleaf student, admin, auth, catalog, and inventory pages
+  static/css/      Student, admin, and shared premium styles
+  static/images/   LIBRIX SVG branding and library artwork
+  application.properties
+
+database/
+  schema.sql       Canonical MySQL schema
+  seed.sql         Demo/reference data
+
+src/test/
+  Java integration, validation, security, and business-rule tests
+```
+
+## Design and accessibility notes
+
+- The interface uses high-contrast dark surfaces and readable light text.
+- Hover and focus states preserve contrast instead of switching to pale
+  backgrounds.
+- Inputs retain visible focus indicators.
+- Password fields are masked on initial render.
+- Eye controls have accessible labels and keyboard-focus styling.
+- `prefers-reduced-motion` reduces animation and transition duration.
+- No client-side JavaScript is required for application workflows.
+
+## Production checklist
+
+- Use MySQL 8 with a dedicated application user.
+- Set strong non-demo passwords and secrets.
+- Set `LIBRIX_DDL_AUTO=validate` after the schema is provisioned.
+- Run behind HTTPS.
+- Configure backups for the MySQL database.
+- Review and restrict database/network access.
+- Remove or replace all demo accounts and sample data.
+- Review external study-resource URLs before deployment.
+- Run `mvn clean test` and a production package build before release.
+
