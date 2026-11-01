@@ -5,9 +5,11 @@ import com.librix.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @Controller
 @RequestMapping("/borrowing")
+@PreAuthorize("hasAnyRole('SUPER_ADMIN','LIBRARIAN')")
 public class BorrowingController {
     private final LibraryService service; private final LoanRepository loans; private final LibraryBookRepository books; private final LibraryMemberRepository members;
     public BorrowingController(LibraryService service, LoanRepository loans, LibraryBookRepository books, LibraryMemberRepository members) { this.service = service; this.loans = loans; this.books = books; this.members = members; }

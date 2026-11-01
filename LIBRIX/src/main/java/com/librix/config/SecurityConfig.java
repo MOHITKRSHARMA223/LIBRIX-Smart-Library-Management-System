@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "LIBRARIAN")
                 .requestMatchers("/books/**", "/members/**", "/borrowing/**").hasAnyRole("SUPER_ADMIN", "LIBRARIAN")
+                .requestMatchers("/categories/**", "/authors/**", "/publishers/**", "/search/**", "/dashboard").hasAnyRole("SUPER_ADMIN", "LIBRARIAN")
                 .anyRequest().authenticated())
             .formLogin(login -> login.loginPage("/student/login").loginProcessingUrl("/authenticate").successHandler(portalSuccessHandler()).failureUrl("/student/login?error").permitAll())
             .logout(logout -> logout.logoutSuccessUrl("/student/login?logout").permitAll())

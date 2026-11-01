@@ -60,4 +60,20 @@ class LibriXApplicationTest {
             mockMvc.perform(get("/student/dashboard").with(user("admin").roles("SUPER_ADMIN")))
                 .andExpect(status().isForbidden());
         }
+
+        @Test void newOperationalRoutesRespectPortalRoles() throws Exception {
+            mockMvc.perform(get("/admin/reports").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/reports"));
+            mockMvc.perform(get("/admin/reservations").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/reservations"));
+            mockMvc.perform(get("/admin/reports").with(user("student").roles("STUDENT")))
+                .andExpect(status().isForbidden());
+            mockMvc.perform(get("/borrowing").with(user("student").roles("STUDENT")))
+                .andExpect(status().isForbidden());
+        }
+
+        @Test void studentLibraryPageRendersReservationSection() throws Exception {
+            mockMvc.perform(get("/student/my-books").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/my-books"));
+        }
 }

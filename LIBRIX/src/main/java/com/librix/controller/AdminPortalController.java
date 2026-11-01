@@ -6,18 +6,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.time.LocalDate;
 
 @Controller
 @PreAuthorize("hasAnyRole('SUPER_ADMIN','LIBRARIAN')")
 public class AdminPortalController {
-    private final LibraryBookRepository books; private final LibraryMemberRepository members; private final LoanRepository loans;
-    public AdminPortalController(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans) { this.books = books; this.members = members; this.loans = loans; }
+    private final LibraryBookRepository books; private final LibraryMemberRepository members; private final LoanRepository loans; private final BookReservationRepository reservations;
+    public AdminPortalController(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans, BookReservationRepository reservations) { this.books = books; this.members = members; this.loans = loans; this.reservations = reservations; }
     @GetMapping({"/admin", "/admin/dashboard"})
     public String dashboard(Model model) {
         model.addAttribute("totalBooks", books.count());
         model.addAttribute("availableCopies", books.findAll().stream().mapToInt(b -> b.getAvailableCopies()).sum());
         model.addAttribute("activeMembers", members.countByActiveTrue());
         model.addAttribute("activeLoans", loans.countByStatus(LoanStatus.ACTIVE));
+        model.addAttribute("overdueLoans", loans.countByStatusAndDueAtBefore(LoanStatus.ACTIVE, LocalDate.now()));
+        model.addAttribute("pendingReservations", reservations.countByStatusIn(java.util.List.of(com.librix.model.ReservationStatus.REQUESTED, com.librix.model.ReservationStatus.READY)));
         model.addAttribute("recentLoans", loans.findTop8ByOrderByBorrowedAtDesc());
         return "admin/dashboard";
     }

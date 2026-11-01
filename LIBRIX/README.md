@@ -16,6 +16,9 @@ LIBRIX is a Java 26 Spring Boot library-management application with server-rende
 - Global server-side search across catalog and member records
 - Super-admin activity logs, system notifications, and library settings
 - Separate student and admin portals with distinct login pages, layouts, dashboards, and role-enforced URL namespaces
+- Student self-service waitlists for unavailable books, with cancellation and reservation status tracking
+- Admin reservation queue, overdue/fine reporting, and downloadable overdue-loan CSV exports
+- Explicit role boundaries for circulation, catalog management, search, reports, and administration
 - MySQL schema plus H2 local fallback for development
 - JUnit 5 and Spring MVC integration tests
 
@@ -47,6 +50,8 @@ Demo mode accepts `admin` / `admin123` and `student` / `student123`. These are d
 4. Start LIBRIX.
 
 See [docs/installation.md](docs/installation.md) and [docs/testing.md](docs/testing.md).
+
+For an existing MySQL installation, apply `database/migrations/V002__book_reservations.sql` before using student waitlists. Hibernate `update` will also create this additive table during local development.
 
 ## Honest scope note
 
