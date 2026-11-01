@@ -1,4 +1,13 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.jdt.ls.java.home": "C:\\Program Files\\Java\\jdk-26.0.2",
+    "java.debug.settings.forceBuildBeforeLaunch": true,
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-26",
+            "path": "C:\\Program Files\\Java\\jdk-26.0.2",
+            "default": true
+        }
+    ]
 }
