@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title">
+  <title>LIBRIX mark</title>
+  <defs>
+    <linearGradient id="mark-gradient" x1="0" x2="1">
+      <stop stop-color="#7c5cff"/>
+      <stop offset="1" stop-color="#2dd4bf"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="26" fill="#121a35"/>
+  <path d="M25 19h13v39c0 8 4 12 12 12 7 0 11-4 11-12V19h13v40c0 15-8 23-24 23S25 74 25 59V19Z" fill="url(#mark-gradient)"/>
+  <circle cx="72" cy="24" r="6" fill="#f3c969"/>
+</svg>

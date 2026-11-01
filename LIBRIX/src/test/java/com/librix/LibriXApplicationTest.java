@@ -26,6 +26,7 @@ class LibriXApplicationTest {
     @Test void loginPageIsPublic() throws Exception {
             mockMvc.perform(get("/student/login")).andExpect(status().isOk()).andExpect(view().name("auth/student-login"));
             mockMvc.perform(get("/admin/login")).andExpect(status().isOk()).andExpect(view().name("auth/admin-login"));
+            mockMvc.perform(get("/student/register")).andExpect(status().isOk()).andExpect(view().name("auth/student-register"));
     }
 
     @Test void dashboardIsSecuredAndRenders() throws Exception {
@@ -75,5 +76,29 @@ class LibriXApplicationTest {
         @Test void studentLibraryPageRendersReservationSection() throws Exception {
             mockMvc.perform(get("/student/my-books").with(user("student").roles("STUDENT")))
                 .andExpect(status().isOk()).andExpect(view().name("student/my-books"));
+        }
+
+        @Test void studentToolsAndAdminAccountsAreRoleProtected() throws Exception {
+            mockMvc.perform(get("/student/resources").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/resources"));
+            mockMvc.perform(get("/student/notifications").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/notifications"));
+            mockMvc.perform(get("/admin/users").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/users"));
+            mockMvc.perform(get("/admin/users").with(user("student").roles("STUDENT")))
+                .andExpect(status().isForbidden());
+        }
+
+        @Test void focusAndSeatWorkspacesRespectPortalRoles() throws Exception {
+            mockMvc.perform(get("/student/planner").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/planner"));
+            mockMvc.perform(get("/student/seats").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/seats"));
+            mockMvc.perform(get("/admin/study-plans").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/study-plans"));
+            mockMvc.perform(get("/admin/seat-bookings").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/seat-bookings"));
+            mockMvc.perform(get("/student/planner").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isForbidden());
         }
 }

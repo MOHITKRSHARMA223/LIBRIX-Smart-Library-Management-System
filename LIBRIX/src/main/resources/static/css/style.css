@@ -11,7 +11,42 @@
 @media (max-width:900px){ .app{grid-template-columns:1fr}.sidebar{position:static}.nav{grid-template-columns:repeat(3,1fr)}.logout{margin:0}.cards{grid-template-columns:repeat(2,1fr)}.auth-page{grid-template-columns:1fr}.auth-brand{padding:42px 30px}.auth-brand h1{font-size:38px}.page,.topbar{padding-left:20px;padding-right:20px} }
 @media (max-width:560px){.cards{grid-template-columns:1fr}.nav{grid-template-columns:1fr 1fr}.page-head{align-items:start;flex-direction:column}.toolbar{align-items:stretch;flex-direction:column}.toolbar input{max-width:none}}
 
-body { background:radial-gradient(circle at 85% -10%, #e8edff 0, transparent 34%), var(--paper); }
+/* Shared premium night theme for legacy inventory and catalog screens */
+:root{--night:#080d22;--night-2:#11183a;--glass:rgba(20,28,65,.78);--line-dark:rgba(176,190,255,.16);--muted-dark:#a8b1d1;--cyan:#5ee7ff;--glow:#7e6cff}
+html{scroll-behavior:smooth}
+*{cursor:default}
+a,button,.btn,.logout{cursor:pointer}
+input,textarea,select{cursor:text}
+body{background:radial-gradient(circle at 85% 0,rgba(87,71,217,.3),transparent 30%),linear-gradient(135deg,var(--night),#101536 55%,#171342);color:#f2f4ff;animation:page-in .55s ease both}
+.sidebar{background:linear-gradient(180deg,rgba(11,17,48,.96),rgba(26,20,72,.96));border-right:1px solid var(--line-dark);box-shadow:16px 0 50px rgba(0,0,0,.24)}
+.brand strong{display:flex;align-items:center;gap:9px;background:linear-gradient(100deg,#fff,var(--cyan) 48%,#b49aff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand strong img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 5px 12px rgba(94,231,255,.2))}
+.brand span,.nav a{color:var(--muted-dark)}
+.nav a:hover,.nav a.active{background:linear-gradient(100deg,rgba(126,108,255,.3),rgba(94,231,255,.08));color:#fff}
+.topbar h2,.page-head h1{color:#fff}
+.eyebrow,.page-head p,label{color:var(--muted-dark)}
+.card,.table-wrap,.form-card,.auth-card{background:linear-gradient(145deg,rgba(28,38,86,.78),rgba(14,20,51,.9));border-color:var(--line-dark);box-shadow:0 20px 60px rgba(0,0,0,.22);backdrop-filter:blur(14px)}
+.metric{border-left-color:var(--cyan)}
+.metric strong{background:linear-gradient(100deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+th{color:#aab4d6;border-color:var(--line-dark)}
+td{color:#e8ebff;border-color:var(--line-dark)}
+tbody tr:hover{background:rgba(126,108,255,.1)}
+input,select{background:rgba(5,9,28,.72);border-color:var(--line-dark);color:#fff}
+input:focus,select:focus{outline:3px solid rgba(94,231,255,.15);border-color:var(--cyan)}
+.btn{background:linear-gradient(100deg,#4f6df5,#7e5df1);box-shadow:0 12px 28px rgba(74,76,220,.3)}
+.btn:hover{background:linear-gradient(100deg,#6380ff,#936fff)}
+.btn.secondary{background:rgba(255,255,255,.08);color:#c9d1ff;border:1px solid var(--line-dark)}
+.btn.danger{background:rgba(255,120,143,.12);color:#ff9eae;border:1px solid rgba(255,120,143,.2)}
+.badge{background:rgba(114,241,188,.14);color:#72f1bc}
+.badge.out{background:rgba(255,120,143,.12);color:#ff9eae}
+.auth-page{background:radial-gradient(circle at 15% 15%,rgba(126,108,255,.35),transparent 34%),var(--night)}
+.auth-brand{background:linear-gradient(145deg,#111b4b,#36216e 58%,#172a61)}
+.auth-card{color:#f2f4ff}
+.auth-card h2{color:#fff}
+.text-link{color:var(--cyan)}
+@keyframes page-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*::before{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
 .sidebar { background:linear-gradient(180deg, #101b35 0%, #172747 100%); box-shadow:14px 0 40px rgba(16,27,53,.08); }
 .brand strong { background:linear-gradient(100deg,#fff,#aab8df); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .nav a { transition:transform .2s ease, background .2s ease, color .2s ease; }
@@ -25,10 +60,23 @@ body { background:radial-gradient(circle at 85% -10%, #e8edff 0, transparent 34%
 input:focus,select:focus { outline:3px solid rgba(49,94,202,.14); border-color:var(--blue); }
 .btn:focus-visible,.nav a:focus-visible,.logout:focus-visible { outline:3px solid rgba(121,87,232,.35); outline-offset:2px; }
 tr { transition:background .18s ease; }
-tbody tr:hover { background:#f8faff; }
+tbody tr:hover { background:rgba(126,108,255,.16); }
 .auth-page { background:radial-gradient(circle at 15% 15%, rgba(121,87,232,.38), transparent 34%), var(--navy); }
 .auth-brand { background:linear-gradient(145deg,rgba(16,27,53,.96),rgba(36,59,112,.96)); position:relative; overflow:hidden; }
 .auth-brand::after { content:""; position:absolute; width:360px; height:360px; right:-130px; bottom:-130px; border:1px solid rgba(255,255,255,.12); border-radius:50%; box-shadow:0 0 0 34px rgba(255,255,255,.035),0 0 0 68px rgba(255,255,255,.025); }
 .auth-brand h1 { letter-spacing:-.04em; }
 .auth-card { box-shadow:0 22px 65px rgba(16,27,53,.13); }
 .auth-card .btn { box-shadow:0 10px 20px rgba(49,94,202,.2); }
+
+.password-shell{position:relative}
+.password-shell>input:not(.password-toggle){padding-right:48px;-webkit-text-security:disc}
+.password-shell>input:not(.password-toggle):focus{outline:3px solid rgba(94,231,255,.15);border-color:var(--cyan)}
+.password-toggle{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none}
+.password-toggle-label{position:absolute;z-index:2;right:11px;top:50%;width:26px;height:26px;margin:0;transform:translateY(-50%);display:grid;place-items:center;color:#8f9bc1;cursor:pointer;border-radius:7px;transition:color .2s ease,background .2s ease}
+.password-toggle-label:hover{color:var(--cyan);background:rgba(94,231,255,.1)}
+.eye-icon{position:absolute;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s ease,transform .2s ease}
+.eye-closed{opacity:0;transform:scale(.7)}
+.password-toggle:checked~.password-toggle-label .eye-open{opacity:0;transform:scale(.7)}
+.password-toggle:checked~.password-toggle-label .eye-closed{opacity:1;transform:scale(1)}
+.password-toggle:checked~input:not(.password-toggle){-webkit-text-security:none}
+.password-toggle:focus-visible~.password-toggle-label{outline:2px solid var(--cyan);outline-offset:2px}

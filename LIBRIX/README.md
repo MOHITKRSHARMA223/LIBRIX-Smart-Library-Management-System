@@ -16,6 +16,12 @@ LIBRIX is a Java 26 Spring Boot library-management application with server-rende
 - Global server-side search across catalog and member records
 - Super-admin activity logs, system notifications, and library settings
 - Separate student and admin portals with distinct login pages, layouts, dashboards, and role-enforced URL namespaces
+- Student registration with BCrypt passwords, pending approval, account suspension, audit records, and in-app notifications
+- Student wishlist, personalized category-based recommendations, reading progress tracking, reading history, study resources, and notification center
+- Admin account review workspace for approving/suspending student access and monitoring registration activity
+- Original LIBRIX SVG brand mark and library illustration with CSS-only motion, responsive cards, hover states, and no JavaScript
+- Premium dark navy/indigo/purple glass theme shared across student, admin, inventory, and catalog screens, including page transitions and reduced-motion support
+- Non-editable surfaces use the default cursor while actual form controls retain text-entry cursors
 - Student self-service waitlists for unavailable books, with cancellation and reservation status tracking
 - Admin reservation queue, overdue/fine reporting, and downloadable overdue-loan CSV exports
 - Explicit role boundaries for circulation, catalog management, search, reports, and administration
@@ -35,6 +41,8 @@ java -jar target/librix-1.0.0.jar
 Open http://localhost:8080/login.
 
 Portal entry points are `/student/login` and `/admin/login`. Students are routed to the student portal after authentication; staff are routed to the admin portal.
+
+New students can register at `/student/register`. Registrations are inactive until a super administrator approves them from **Admin Portal → Student accounts**.
 
 The current machine has JDK 26.0.2 installed. Maven must be installed or its `bin` directory added to `PATH` before running the commands above.
 
