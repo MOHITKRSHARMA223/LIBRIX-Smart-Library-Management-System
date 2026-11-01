@@ -11,9 +11,9 @@ import java.time.LocalDate;
 public class BookReservation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private LibraryBook book;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private LibraryMember member;
     @Column(nullable = false)
     private LocalDate requestedAt;

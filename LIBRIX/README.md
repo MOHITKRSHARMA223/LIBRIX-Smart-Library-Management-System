@@ -40,7 +40,19 @@ The current machine has JDK 26.0.2 installed. Maven must be installed or its `bi
 
 ## Demo credentials
 
-Demo mode accepts `admin` / `admin123` and `student` / `student123`. These are demo-only credentials and are not inserted into production databases. Replace them through the secure setup flow before deployment.
+The local demo seed creates these accounts:
+
+| Username | Password | Role |
+|---|---|---|
+| `admin` | `admin123` | Super administrator |
+| `librarian` | `librarian123` | Librarian |
+| `student` | `student123` | Student |
+| `aisha` | `aisha123` | Student |
+| `rohan` | `rohan123` | Student |
+
+These are demo-only credentials. Set `LIBRIX_DEMO_ADMIN_PASSWORD` and
+`LIBRIX_DEMO_STUDENT_PASSWORD` before starting a fresh local database, and replace
+demo credentials before deploying to production.
 
 ## Database setup
 

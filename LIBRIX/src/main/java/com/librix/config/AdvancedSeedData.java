@@ -10,11 +10,46 @@ import org.springframework.context.annotation.Configuration;
 public class AdvancedSeedData {
     @Bean CommandLineRunner seedAdvanced(CategoryRepository categories, AuthorRepository authors, PublisherRepository publishers, SystemNotificationRepository notifications, LibrarySettingRepository settings) {
         return args -> {
-            if (categories.count() == 0) { categories.save(new Category("Computer Science", "Programming, systems, and software engineering")); categories.save(new Category("Literature", "Classic and contemporary fiction")); }
-            if (authors.count() == 0) { authors.save(new Author("Robert C. Martin")); authors.save(new Author("James Clear")); }
-            if (publishers.count() == 0) publishers.save(new Publisher("Prentice Hall"));
-            if (notifications.count() == 0) notifications.save(new SystemNotification("Welcome to LIBRIX", "System notifications are now centralized for administrators.", "SYSTEM"));
-            if (settings.count() == 0) { settings.save(new LibrarySetting("library.name", "LIBRIX Central Library")); settings.save(new LibrarySetting("policy.borrowing-days", "14")); settings.save(new LibrarySetting("policy.daily-fine", "2.00")); }
+            addCategory(categories, "Computer Science", "Programming, systems, and software engineering");
+            addCategory(categories, "Literature", "Classic and contemporary fiction");
+            addCategory(categories, "Personal Development", "Habits, learning, and personal growth");
+            addCategory(categories, "History", "World history and civilization");
+            addAuthor(authors, "Robert C. Martin");
+            addAuthor(authors, "James Clear");
+            addAuthor(authors, "Jane Austen");
+            addAuthor(authors, "Paulo Coelho");
+            addAuthor(authors, "Yuval Noah Harari");
+            addPublisher(publishers, "Prentice Hall");
+            addPublisher(publishers, "Penguin Classics");
+            addPublisher(publishers, "HarperCollins");
+            if (notifications.findTop100ByOrderByCreatedAtDesc().stream().noneMatch(n -> "Welcome to LIBRIX".equals(n.getTitle()))) {
+                notifications.save(new SystemNotification("Welcome to LIBRIX", "System notifications are now centralized for administrators.", "SYSTEM"));
+            }
+            addSetting(settings, "library.name", "LIBRIX Central Library");
+            addSetting(settings, "policy.borrowing-days", "14");
+            addSetting(settings, "policy.daily-fine", "2.00");
         };
+    }
+
+    private static void addCategory(CategoryRepository repository, String name, String description) {
+        if (repository.findAll().stream().noneMatch(item -> name.equalsIgnoreCase(item.getName()))) {
+            repository.save(new Category(name, description));
+        }
+    }
+
+    private static void addAuthor(AuthorRepository repository, String name) {
+        if (repository.findAll().stream().noneMatch(item -> name.equalsIgnoreCase(item.getName()))) {
+            repository.save(new Author(name));
+        }
+    }
+
+    private static void addPublisher(PublisherRepository repository, String name) {
+        if (repository.findAll().stream().noneMatch(item -> name.equalsIgnoreCase(item.getName()))) {
+            repository.save(new Publisher(name));
+        }
+    }
+
+    private static void addSetting(LibrarySettingRepository repository, String key, String value) {
+        if (repository.findById(key).isEmpty()) repository.save(new LibrarySetting(key, value));
     }
 }
