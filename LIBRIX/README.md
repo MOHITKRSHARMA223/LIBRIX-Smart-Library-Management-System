@@ -161,6 +161,9 @@ and password show/hide controls is implemented with CSS and HTML controls.
 
 ## Run locally
 
+Run all Maven commands from the `LIBRIX` directory (the Git repository contains
+the application as a nested Maven module).
+
 ### Requirements
 
 - JDK 26
@@ -173,9 +176,9 @@ The default configuration uses a file-based H2 database at
 `./data/librix`.
 
 ```powershell
+Set-Location .\LIBRIX
 mvn clean test
-mvn package
-java -jar target/librix-1.0.0.jar
+mvn spring-boot:run
 ```
 
 Open:
@@ -186,6 +189,28 @@ http://localhost:8080/admin/login
 ```
 
 The default server port is `8080`. Override it with `LIBRIX_PORT`.
+
+Verify that the local server is responding:
+
+```powershell
+Invoke-WebRequest http://localhost:8080/student/login -UseBasicParsing
+```
+
+For a packaged run instead of the hot Maven run:
+
+```powershell
+mvn package
+java -jar target/librix-1.0.0.jar
+```
+
+If the file-based H2 database is locked by another local process, stop that
+process or use an isolated in-memory database for a temporary run:
+
+```powershell
+$env:LIBRIX_DB_URL = "jdbc:h2:mem:librix-local;DB_CLOSE_DELAY=-1"
+$env:LIBRIX_DDL_AUTO = "create-drop"
+mvn spring-boot:run
+```
 
 ### MySQL mode
 
@@ -327,4 +352,3 @@ src/test/
 - Remove or replace all demo accounts and sample data.
 - Review external study-resource URLs before deployment.
 - Run `mvn clean test` and a production package build before release.
-
