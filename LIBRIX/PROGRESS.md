@@ -26,7 +26,7 @@ Updated: 2026-11-03
 ## Verified
 
 - `mvn test package`: BUILD SUCCESS
-- 13 tests passed
+- 18 tests passed
 - `GET /login`: HTTP 200
 - Running on Java 26.0.2
 - Updated server starts on port 8080
