@@ -196,6 +196,9 @@ Verify that the local server is responding:
 Invoke-WebRequest http://localhost:8080/student/login -UseBasicParsing
 ```
 
+The local hot run has been verified from the `LIBRIX` directory. The student
+login, admin login, and student registration pages each respond with HTTP 200.
+
 For a packaged run instead of the hot Maven run:
 
 ```powershell
