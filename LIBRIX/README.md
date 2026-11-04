@@ -78,6 +78,8 @@ and password show/hide controls is implemented with CSS and HTML controls.
 - Reservation cancellation
 - Reading progress tracking from 0 to 100 percent
 - Reading history
+- One-time seven-day loan renewal for active, non-overdue loans without an
+  active waitlist
 - Wishlist management
 - Study resources and external academic links
 - Personal notification center

@@ -9,5 +9,6 @@ public interface BookReservationRepository extends JpaRepository<BookReservation
     List<BookReservation> findByMemberIdOrderByRequestedAtDesc(Long memberId);
     List<BookReservation> findTop100ByOrderByRequestedAtDesc();
     boolean existsByBookIdAndMemberIdAndStatusIn(Long bookId, Long memberId, List<ReservationStatus> statuses);
+    boolean existsByBookIdAndStatusIn(Long bookId, List<ReservationStatus> statuses);
     long countByStatusIn(List<ReservationStatus> statuses);
 }

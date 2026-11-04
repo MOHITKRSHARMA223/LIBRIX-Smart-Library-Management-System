@@ -21,4 +21,13 @@ class BorrowingRulesTest {
     @Test void rejectsUnavailableBook() {
         assertThrows(IllegalStateException.class, () -> BorrowingRules.validateBorrow(true, 0, false));
     }
+    @Test void rejectsRenewalForOverdueLoan() {
+        assertThrows(IllegalStateException.class, () -> BorrowingRules.validateRenewal(true, true, 0, false));
+    }
+    @Test void rejectsRenewalWhenBookHasWaitlist() {
+        assertThrows(IllegalStateException.class, () -> BorrowingRules.validateRenewal(true, false, 0, true));
+    }
+    @Test void rejectsSecondRenewal() {
+        assertThrows(IllegalStateException.class, () -> BorrowingRules.validateRenewal(true, false, 1, false));
+    }
 }

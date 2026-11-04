@@ -11,7 +11,10 @@ public class LibraryService {
     private final LibraryBookRepository books;
     private final LibraryMemberRepository members;
     private final LoanRepository loans;
-    public LibraryService(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans) { this.books = books; this.members = members; this.loans = loans; }
+    private final BookReservationRepository reservations;
+    public LibraryService(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans, BookReservationRepository reservations) {
+        this.books = books; this.members = members; this.loans = loans; this.reservations = reservations;
+    }
 
     @Transactional
     public Loan borrow(Long bookId, Long memberId) {
@@ -31,6 +34,22 @@ public class LibraryService {
         loan.getBook().returnCopy();
         loan.returnLoan(LocalDate.now());
         books.save(loan.getBook());
+        loans.save(loan);
+    }
+
+    @Transactional
+    public void renewLoan(Long loanId, String username) {
+        Loan loan = loans.findById(loanId).orElseThrow(() -> new IllegalArgumentException("Loan not found"));
+        if (!loan.getMember().getUser().getUsername().equalsIgnoreCase(username)) {
+            throw new IllegalStateException("You can only renew your own loans");
+        }
+        BorrowingRules.validateRenewal(
+                loan.getStatus() == LoanStatus.ACTIVE,
+                loan.getDueAt().isBefore(LocalDate.now()),
+                loan.getRenewalCount(),
+                reservations.existsByBookIdAndStatusIn(loan.getBook().getId(),
+                        java.util.List.of(ReservationStatus.REQUESTED, ReservationStatus.READY)));
+        loan.renew(BorrowingRules.RENEWAL_DAYS);
         loans.save(loan);
     }
 }

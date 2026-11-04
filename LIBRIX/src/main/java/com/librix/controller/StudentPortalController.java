@@ -3,6 +3,7 @@ package com.librix.controller;
 import com.librix.model.LoanStatus;
 import com.librix.model.ReservationStatus;
 import com.librix.repository.*;
+import com.librix.service.LibraryService;
 import com.librix.service.ReservationService;
 import com.librix.model.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,11 +25,12 @@ public class StudentPortalController {
     private final LibraryBookRepository books; private final LibraryMemberRepository members; private final LoanRepository loans; private final BookReservationRepository reservations; private final ReservationService reservationService;
     private final WishlistRepository wishlist; private final ReadingProgressRepository progress; private final StudyResourceRepository resources; private final UserNotificationRepository notifications; private final AppUserRepository users; private final ActivityLogRepository activityLogs;
     private final StudyPlanItemRepository studyPlan; private final SeatBookingRepository seatBookings;
+    private final LibraryService libraryService;
     public StudentPortalController(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans, BookReservationRepository reservations, ReservationService reservationService,
                                    WishlistRepository wishlist, ReadingProgressRepository progress, StudyResourceRepository resources, UserNotificationRepository notifications,
-                                   AppUserRepository users, ActivityLogRepository activityLogs, StudyPlanItemRepository studyPlan, SeatBookingRepository seatBookings) {
+                                   AppUserRepository users, ActivityLogRepository activityLogs, StudyPlanItemRepository studyPlan, SeatBookingRepository seatBookings, LibraryService libraryService) {
         this.books = books; this.members = members; this.loans = loans; this.reservations = reservations; this.reservationService = reservationService;
-        this.wishlist = wishlist; this.progress = progress; this.resources = resources; this.notifications = notifications; this.users = users; this.activityLogs = activityLogs; this.studyPlan = studyPlan; this.seatBookings = seatBookings;
+        this.wishlist = wishlist; this.progress = progress; this.resources = resources; this.notifications = notifications; this.users = users; this.activityLogs = activityLogs; this.studyPlan = studyPlan; this.seatBookings = seatBookings; this.libraryService = libraryService;
     }
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication, Model model) {
@@ -73,6 +75,7 @@ public class StudentPortalController {
     }
     @PostMapping("/catalog/{bookId}/reserve") public String reserve(@PathVariable Long bookId, Authentication authentication) { reservationService.reserve(bookId, authentication.getName()); return "redirect:/student/my-books"; }
     @PostMapping("/reservations/{id}/cancel") public String cancelReservation(@PathVariable Long id, Authentication authentication) { reservationService.cancel(id, authentication.getName()); return "redirect:/student/my-books"; }
+    @PostMapping("/loans/{id}/renew") public String renewLoan(@PathVariable Long id, Authentication authentication) { libraryService.renewLoan(id, authentication.getName()); return "redirect:/student/my-books"; }
     @PostMapping("/catalog/{bookId}/wishlist")
     public String wishlist(@PathVariable Long bookId, Authentication authentication) {
         wishlist.findForUserAndBook(authentication.getName(), bookId).orElseGet(() -> {
