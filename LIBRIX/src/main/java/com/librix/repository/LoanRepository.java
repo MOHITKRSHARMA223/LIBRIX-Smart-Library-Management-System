@@ -13,4 +13,5 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     long countByMemberIdAndStatus(Long memberId, LoanStatus status);
     List<Loan> findByStatusAndDueAtBeforeOrderByDueAtAsc(LoanStatus status, LocalDate date);
     long countByStatusAndDueAtBefore(LoanStatus status, LocalDate date);
+    long countByStatusAndDueAtBetween(LoanStatus status, LocalDate start, LocalDate end);
 }

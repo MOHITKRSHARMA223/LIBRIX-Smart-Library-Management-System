@@ -100,6 +100,7 @@ and password show/hide controls is implemented with CSS and HTML controls.
 ### Admin and staff portal
 
 - Separate administration dashboard and navigation
+- Operations dashboard with due-soon (next three days) and overdue-loan alerts
 - Dashboard metrics for users, books, loans, reservations, study plans, and
   seat bookings
 - Book inventory management

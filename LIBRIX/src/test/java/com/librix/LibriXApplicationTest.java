@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +31,10 @@ class LibriXApplicationTest {
     }
 
     @Test void dashboardIsSecuredAndRenders() throws Exception {
-        mockMvc.perform(get("/dashboard").with(user("admin").roles("SUPER_ADMIN"))).andExpect(status().isOk()).andExpect(view().name("dashboard/index"));
+        mockMvc.perform(get("/dashboard").with(user("admin").roles("SUPER_ADMIN")))
+            .andExpect(status().isOk())
+            .andExpect(view().name("dashboard/index"))
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("Due in 3 days")));
     }
 
     @Test void dashboardRedirectsAnonymousUsers() throws Exception {
