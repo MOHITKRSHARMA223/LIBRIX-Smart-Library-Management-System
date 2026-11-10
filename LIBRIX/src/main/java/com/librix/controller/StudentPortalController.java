@@ -42,11 +42,18 @@ public class StudentPortalController {
         List<LibraryBook> recommended = books.findAll().stream()
                 .filter(book -> readCategories.isEmpty() || readCategories.contains(book.getCategory()))
                 .limit(6).toList();
+        LocalDate today = LocalDate.now();
         model.addAttribute("studentName", username);
         model.addAttribute("borrowedCount", history.stream().filter(l -> l.getStatus() == LoanStatus.ACTIVE).count());
         model.addAttribute("readCount", history.stream().filter(l -> l.getStatus() == LoanStatus.RETURNED).count());
-        model.addAttribute("overdueCount", history.stream().filter(l -> l.getStatus() == LoanStatus.ACTIVE && l.getDueAt().isBefore(java.time.LocalDate.now())).count());
+        model.addAttribute("overdueCount", history.stream().filter(l -> l.getStatus() == LoanStatus.ACTIVE && l.getDueAt().isBefore(today)).count());
         model.addAttribute("reservationCount", studentReservations.stream().filter(r -> r.getStatus() == ReservationStatus.REQUESTED || r.getStatus() == ReservationStatus.READY).count());
+        model.addAttribute("today", today);
+        model.addAttribute("attentionLoans", history.stream()
+                .filter(loan -> loan.getStatus() == LoanStatus.ACTIVE && !loan.getDueAt().isAfter(today.plusDays(3)))
+                .sorted(Comparator.comparing(Loan::getDueAt))
+                .limit(5)
+                .toList());
         model.addAttribute("history", history);
         model.addAttribute("recommendedBooks", recommended.isEmpty() ? books.findAll().stream().limit(6).toList() : recommended);
         model.addAttribute("progress", progress.findForUser(username).stream().limit(4).toList());
