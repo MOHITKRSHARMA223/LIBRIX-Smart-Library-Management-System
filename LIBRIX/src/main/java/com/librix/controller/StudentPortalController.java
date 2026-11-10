@@ -64,9 +64,22 @@ public class StudentPortalController {
         model.addAttribute("activeLoanLoad", history.stream().filter(loan -> loan.getStatus() == LoanStatus.ACTIVE).count());
         model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
         model.addAttribute("completedProgress", progress.findForUser(username).stream().filter(item -> item.getPercentComplete() == 100).count());
+        model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
+        model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
         model.addAttribute("nextSeatBooking", seatBookings.findForUser(username).stream()
                 .filter(booking -> booking.getStatus() == SeatBookingStatus.CONFIRMED && !booking.getBookingDate().isBefore(LocalDate.now())).findFirst().orElse(null));
         return "student/dashboard";
+    }
+    @GetMapping("/insights")
+    public String insights(Authentication authentication, Model model) {
+        String username = authentication.getName();
+        var plan = studyPlan.findForUser(username);
+        var reading = progress.findForUser(username);
+        model.addAttribute("averageProgress", reading.stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
+        model.addAttribute("completedBooks", reading.stream().filter(item -> item.getPercentComplete() == 100).count());
+        model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
+        model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
+        return "student/insights";
     }
     @GetMapping("/catalog") public String catalog(@RequestParam(defaultValue = "") String query, Authentication authentication, Model model) {
         var results = query.isBlank() ? books.findAll() : books.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(query, query);
