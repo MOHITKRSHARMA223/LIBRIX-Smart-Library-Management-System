@@ -17,8 +17,8 @@ public class Loan {
     @Column(nullable = false)
     private LocalDate dueAt;
     private LocalDate returnedAt;
-    @Column(nullable = false)
-    private int renewalCount;
+    @Column(nullable = true)
+    private Integer renewalCount = 0;
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 20)
     private LoanStatus status = LoanStatus.ACTIVE;
 
@@ -31,7 +31,7 @@ public class Loan {
     public LocalDate getDueAt() { return dueAt; }
     public LocalDate getReturnedAt() { return returnedAt; }
     public LoanStatus getStatus() { return status; }
-    public int getRenewalCount() { return renewalCount; }
+    public int getRenewalCount() { return renewalCount == null ? 0 : renewalCount; }
     public void renew(int additionalDays) { dueAt = dueAt.plusDays(additionalDays); renewalCount++; }
     public void returnLoan(LocalDate date) { returnedAt = date; status = LoanStatus.RETURNED; }
 }
