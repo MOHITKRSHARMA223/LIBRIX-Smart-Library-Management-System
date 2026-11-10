@@ -105,6 +105,9 @@ tbody tr:hover,tbody tr:focus-within{background:rgba(126,108,255,.14)}
 .attention-item div span{margin-top:4px;color:var(--muted-dark);font-size:12px}
 .attention-status{padding:6px 10px;border-radius:999px;background:rgba(94,231,255,.12);color:var(--cyan);font-size:12px;font-weight:700}
 .attention-status.overdue{background:rgba(255,105,130,.14);color:#ff91a7}
+.community-form{max-width:680px;margin:20px 0 30px;padding:22px;border:1px solid var(--line-dark);border-radius:16px;background:rgba(255,255,255,.04)}
+.community-form input,.community-form textarea,.community-form select{display:block;width:100%;margin:8px 0;padding:12px;border:1px solid var(--line-dark);border-radius:10px;background:rgba(5,9,28,.72);color:#fff;font:inherit}
+.community-form textarea{min-height:110px;resize:vertical}
 .smart-hub{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:0 0 30px}
 .smart-hub article{padding:16px;border:1px solid var(--line-dark);border-radius:14px;background:rgba(255,255,255,.04)}
 .smart-hub span,.smart-hub a{display:block;color:var(--muted-dark);font-size:12px}

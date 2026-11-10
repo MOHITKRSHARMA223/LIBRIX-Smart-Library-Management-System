@@ -25,12 +25,13 @@ public class StudentPortalController {
     private final LibraryBookRepository books; private final LibraryMemberRepository members; private final LoanRepository loans; private final BookReservationRepository reservations; private final ReservationService reservationService;
     private final WishlistRepository wishlist; private final ReadingProgressRepository progress; private final StudyResourceRepository resources; private final UserNotificationRepository notifications; private final AppUserRepository users; private final ActivityLogRepository activityLogs;
     private final StudyPlanItemRepository studyPlan; private final SeatBookingRepository seatBookings;
+    private final GamificationProfileRepository gamification;
     private final LibraryService libraryService;
     public StudentPortalController(LibraryBookRepository books, LibraryMemberRepository members, LoanRepository loans, BookReservationRepository reservations, ReservationService reservationService,
                                    WishlistRepository wishlist, ReadingProgressRepository progress, StudyResourceRepository resources, UserNotificationRepository notifications,
-                                   AppUserRepository users, ActivityLogRepository activityLogs, StudyPlanItemRepository studyPlan, SeatBookingRepository seatBookings, LibraryService libraryService) {
+                                   AppUserRepository users, ActivityLogRepository activityLogs, StudyPlanItemRepository studyPlan, SeatBookingRepository seatBookings, LibraryService libraryService, GamificationProfileRepository gamification) {
         this.books = books; this.members = members; this.loans = loans; this.reservations = reservations; this.reservationService = reservationService;
-        this.wishlist = wishlist; this.progress = progress; this.resources = resources; this.notifications = notifications; this.users = users; this.activityLogs = activityLogs; this.studyPlan = studyPlan; this.seatBookings = seatBookings; this.libraryService = libraryService;
+        this.wishlist = wishlist; this.progress = progress; this.resources = resources; this.notifications = notifications;         this.users = users; this.activityLogs = activityLogs; this.studyPlan = studyPlan; this.seatBookings = seatBookings; this.libraryService = libraryService; this.gamification = gamification;
     }
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication, Model model) {
@@ -64,6 +65,9 @@ public class StudentPortalController {
         model.addAttribute("activeLoanLoad", history.stream().filter(loan -> loan.getStatus() == LoanStatus.ACTIVE).count());
         model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
         model.addAttribute("completedProgress", progress.findForUser(username).stream().filter(item -> item.getPercentComplete() == 100).count());
+        var profile = gamification.findByUser_UsernameIgnoreCase(username).orElse(null);
+        model.addAttribute("xp", profile == null ? 0 : profile.getXp());
+        model.addAttribute("badge", profile == null ? "New explorer" : profile.getBadge());
         model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
         model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
         model.addAttribute("nextSeatBooking", seatBookings.findForUser(username).stream()
@@ -79,6 +83,9 @@ public class StudentPortalController {
         model.addAttribute("completedBooks", reading.stream().filter(item -> item.getPercentComplete() == 100).count());
         model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
         model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
+        var profile = gamification.findByUser_UsernameIgnoreCase(username).orElse(null);
+        model.addAttribute("xp", profile == null ? 0 : profile.getXp());
+        model.addAttribute("badge", profile == null ? "New explorer" : profile.getBadge());
         return "student/insights";
     }
     @GetMapping("/catalog") public String catalog(@RequestParam(defaultValue = "") String query, Authentication authentication, Model model) {

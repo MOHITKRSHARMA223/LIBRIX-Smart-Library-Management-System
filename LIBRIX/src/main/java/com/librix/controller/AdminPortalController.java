@@ -50,4 +50,14 @@ public class AdminPortalController {
         model.addAttribute("lowStockBooks", inventory.stream().filter(book -> book.getAvailableCopies() <= 1).count());
         return "admin/insights";
     }
+    @GetMapping("/admin/analytics")
+    public String analytics(Model model) {
+        model.addAttribute("totalBooks", books.count());
+        model.addAttribute("activeLoans", loans.countByStatus(LoanStatus.ACTIVE));
+        model.addAttribute("activeMembers", members.countByActiveTrue());
+        model.addAttribute("reservations", reservations.countByStatusIn(java.util.List.of(ReservationStatus.REQUESTED, ReservationStatus.READY)));
+        model.addAttribute("seatBookings", seatBookings.count());
+        model.addAttribute("studyPlans", studyPlan.count());
+        return "admin/analytics";
+    }
 }
