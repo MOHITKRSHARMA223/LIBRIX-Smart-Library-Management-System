@@ -61,6 +61,9 @@ public class StudentPortalController {
         var plan = studyPlan.findForUser(username);
         model.addAttribute("studyPlan", plan.stream().limit(3).toList());
         model.addAttribute("todayPlanCount", plan.stream().filter(item -> item.getScheduledDate().equals(LocalDate.now()) && !item.isCompleted()).count());
+        model.addAttribute("activeLoanLoad", history.stream().filter(loan -> loan.getStatus() == LoanStatus.ACTIVE).count());
+        model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
+        model.addAttribute("completedProgress", progress.findForUser(username).stream().filter(item -> item.getPercentComplete() == 100).count());
         model.addAttribute("nextSeatBooking", seatBookings.findForUser(username).stream()
                 .filter(booking -> booking.getStatus() == SeatBookingStatus.CONFIRMED && !booking.getBookingDate().isBefore(LocalDate.now())).findFirst().orElse(null));
         return "student/dashboard";

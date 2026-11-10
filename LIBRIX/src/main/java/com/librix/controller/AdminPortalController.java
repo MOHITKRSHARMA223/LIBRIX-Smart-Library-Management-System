@@ -20,10 +20,15 @@ public class AdminPortalController {
         model.addAttribute("activeMembers", members.countByActiveTrue());
         model.addAttribute("activeLoans", loans.countByStatus(LoanStatus.ACTIVE));
         model.addAttribute("overdueLoans", loans.countByStatusAndDueAtBefore(LoanStatus.ACTIVE, LocalDate.now()));
+        model.addAttribute("dueSoonLoans", loans.countByStatusAndDueAtBetween(LoanStatus.ACTIVE, LocalDate.now(), LocalDate.now().plusDays(3)));
+        model.addAttribute("lowStockBooks", books.findAll().stream().filter(book -> book.getAvailableCopies() <= 1).count());
+        model.addAttribute("circulationLoad", loans.countByStatus(LoanStatus.ACTIVE) + reservations.countByStatusIn(java.util.List.of(ReservationStatus.REQUESTED, ReservationStatus.READY)));
         model.addAttribute("pendingReservations", reservations.countByStatusIn(java.util.List.of(com.librix.model.ReservationStatus.REQUESTED, com.librix.model.ReservationStatus.READY)));
         model.addAttribute("pendingUsers", users.findAll().stream().filter(user -> user.getRole() == Role.STUDENT && !user.isActive()).count());
         model.addAttribute("openStudyPlans", studyPlan.count());
         model.addAttribute("seatBookings", seatBookings.count());
+        model.addAttribute("pendingWork", users.findAll().stream().filter(user -> user.getRole() == Role.STUDENT && !user.isActive()).count()
+                + reservations.countByStatusIn(java.util.List.of(ReservationStatus.REQUESTED, ReservationStatus.READY)));
         model.addAttribute("recentLoans", loans.findTop8ByOrderByBorrowedAtDesc());
         return "admin/dashboard";
     }
