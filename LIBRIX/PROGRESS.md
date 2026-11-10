@@ -1,6 +1,6 @@
 # LIBRIX Progress
 
-Updated: 2026-11-03
+Updated: 2026-11-11
 
 ## Completed
 
@@ -22,6 +22,15 @@ Updated: 2026-11-03
 - Global server-side search across catalog and member records
 - Super-admin activity log, notification, and library settings pages
 - Database-backed advanced seed records and 10 JPA repositories
+- Student community reviews and ratings
+- XP gamification profiles and achievement badges
+- Book exchange/donation listings with owner and admin closure
+- Research paper repository and submissions
+- Server-side library assistant
+- Library occupancy dashboard
+- Admin community moderation
+- Admin analytics dashboard
+- Null-safe renewal-count migration for existing H2 records
 
 ## Verified
 
@@ -43,6 +52,13 @@ Updated: 2026-11-03
 - `GET /student/register`: HTTP 200
 - `mvn test`: BUILD SUCCESS
 - `mvn package -DskipTests`: BUILD SUCCESS
+- `mvn test`: BUILD SUCCESS
+- 22 tests passed
+- Authenticated `/student/dashboard`: HTTP 200
+- `/student/community`: HTTP 200
+- `/student/assistant`: HTTP 200
+- `/student/occupancy`: HTTP 200
+- `/admin/login`: HTTP 200
 
 ## Remaining
 
@@ -50,3 +66,4 @@ Updated: 2026-11-03
 - PDF/CSV/Excel report exports beyond the existing overdue CSV report
 - Cover image upload and CSV import
 - Backup/restore and help/support workflows
+- PDF/Excel report exports beyond the existing CSV report

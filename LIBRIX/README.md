@@ -125,6 +125,34 @@ and password show/hide controls is implemented with CSS and HTML controls.
 - Seat-booking oversight
 - Overdue and fine reporting
 - Downloadable overdue-loan CSV report
+- Student book reviews and ratings with one review per student/book
+- XP gamification and achievement badges
+- Student book exchange and donation listings
+- Research paper repository with authenticated submissions
+- Server-side library assistant for catalog and rules questions
+- Student occupancy dashboard based on confirmed seat bookings
+- Admin community moderation for reviews, exchanges, and research papers
+- Admin analytics dashboard for operational statistics
+
+### New routes
+
+| Area | URL | Access |
+|---|---|---|
+| Student community | `/student/community` | `STUDENT` |
+| Book exchange | `/student/exchange` | `STUDENT` |
+| Research repository | `/student/research` | `STUDENT` |
+| Library assistant | `/student/assistant` | `STUDENT` |
+| Occupancy dashboard | `/student/occupancy` | `STUDENT` |
+| Community moderation | `/admin/community` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Analytics | `/admin/analytics` | `SUPER_ADMIN` or `LIBRARIAN` |
+
+### Latest verification
+
+- 22 automated tests passed
+- Maven package build succeeds
+- Authenticated student dashboard returns HTTP 200
+- Student community, assistant, occupancy, and admin login return HTTP 200
+- Existing H2 loan records remain compatible with the renewal-count migration
 - Community moderation for reviews, exchanges, and research submissions
 - Operations analytics for catalog, loans, reservations, seats, and study plans
 
