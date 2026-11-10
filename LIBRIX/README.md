@@ -96,6 +96,12 @@ and password show/hide controls is implemented with CSS and HTML controls.
   - Overlap prevention
   - Cancellation
   - Admin visibility
+- Book community reviews with one-review-per-student-per-book validation
+- XP and achievement badges earned from verified community participation
+- Student exchange and donation listings with owner/admin closure controls
+- Research paper repository with authenticated submissions
+- Server-side library assistant for catalog search and borrowing/seat guidance
+- Current occupancy dashboard based on confirmed seat bookings
 
 ### Admin and staff portal
 
@@ -119,6 +125,8 @@ and password show/hide controls is implemented with CSS and HTML controls.
 - Seat-booking oversight
 - Overdue and fine reporting
 - Downloadable overdue-loan CSV report
+- Community moderation for reviews, exchanges, and research submissions
+- Operations analytics for catalog, loans, reservations, seats, and study plans
 
 ## Portal entry points
 
@@ -135,6 +143,11 @@ and password show/hide controls is implemented with CSS and HTML controls.
 | Seat booking | `/student/seats` | `STUDENT` |
 | Study resources | `/student/resources` | `STUDENT` |
 | Student notifications | `/student/notifications` | `STUDENT` |
+| Student community | `/student/community` | `STUDENT` |
+| Student exchange | `/student/exchange` | `STUDENT` |
+| Student research repository | `/student/research` | `STUDENT` |
+| Student library assistant | `/student/assistant` | `STUDENT` |
+| Student occupancy | `/student/occupancy` | `STUDENT` |
 | Admin dashboard | `/admin/dashboard` | `SUPER_ADMIN` or `LIBRARIAN` |
 | Books | `/books` | `SUPER_ADMIN` or `LIBRARIAN` |
 | Members | `/members` | `SUPER_ADMIN` or `LIBRARIAN` |
@@ -147,6 +160,8 @@ and password show/hide controls is implemented with CSS and HTML controls.
 | Notifications | `/admin/notifications` | `SUPER_ADMIN` |
 | Library settings | `/admin/settings` | `SUPER_ADMIN` |
 | Reports | `/admin/reports` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Community moderation | `/admin/community` | `SUPER_ADMIN` or `LIBRARIAN` |
+| Analytics | `/admin/analytics` | `SUPER_ADMIN` or `LIBRARIAN` |
 | Overdue CSV | `/admin/reports/overdue.csv` | `SUPER_ADMIN` or `LIBRARIAN` |
 
 ## Role boundaries

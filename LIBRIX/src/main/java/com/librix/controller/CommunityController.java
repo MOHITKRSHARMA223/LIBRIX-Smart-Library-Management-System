@@ -55,8 +55,9 @@ public class CommunityController {
 
     @GetMapping("/student/exchange")
     @PreAuthorize("hasRole('STUDENT')")
-    public String exchange(Model model) {
+    public String exchange(Authentication authentication, Model model) {
         model.addAttribute("listings", exchanges.findByStatusOrderByCreatedAtDesc(ExchangeStatus.OPEN));
+        model.addAttribute("username", authentication.getName());
         return "student/exchange";
     }
 

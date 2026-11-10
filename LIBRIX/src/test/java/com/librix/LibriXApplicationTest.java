@@ -105,4 +105,23 @@ class LibriXApplicationTest {
             mockMvc.perform(get("/student/planner").with(user("admin").roles("SUPER_ADMIN")))
                 .andExpect(status().isForbidden());
         }
+
+        @Test void communityAndInsightsRoutesRespectPortalRoles() throws Exception {
+            mockMvc.perform(get("/student/community").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/community"));
+            mockMvc.perform(get("/student/assistant").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/assistant"));
+            mockMvc.perform(get("/student/exchange").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/exchange"));
+            mockMvc.perform(get("/student/research").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/research"));
+            mockMvc.perform(get("/student/occupancy").with(user("student").roles("STUDENT")))
+                .andExpect(status().isOk()).andExpect(view().name("student/occupancy"));
+            mockMvc.perform(get("/student/community").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isForbidden());
+            mockMvc.perform(get("/admin/community").with(user("admin").roles("SUPER_ADMIN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/community"));
+            mockMvc.perform(get("/admin/analytics").with(user("librarian").roles("LIBRARIAN")))
+                .andExpect(status().isOk()).andExpect(view().name("admin/analytics"));
+        }
 }
