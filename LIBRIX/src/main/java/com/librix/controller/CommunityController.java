@@ -43,11 +43,11 @@ public class CommunityController {
         if (rating < 1 || rating > 5 || comment == null || comment.isBlank()) return "redirect:/student/community?invalid";
         AppUser user = currentUser(authentication);
         LibraryBook book = books.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
-        BookReview review = reviews.findByUser_UsernameIgnoreCaseAndBookId(authentication.getName(), bookId)
+        BookReview review = reviews.findForUserAndBook(authentication.getName(), bookId)
                 .orElse(new BookReview(user, book, rating, comment.trim()));
         if (review.getId() != null) review.update(rating, comment.trim());
         reviews.save(review);
-        GamificationProfile profile = profiles.findByUser_UsernameIgnoreCase(authentication.getName())
+        GamificationProfile profile = profiles.findForUser(authentication.getName())
                 .orElseGet(() -> new GamificationProfile(user));
         profile.award(10); profiles.save(profile);
         return "redirect:/student/community";

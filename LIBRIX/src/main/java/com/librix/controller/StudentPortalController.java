@@ -65,7 +65,7 @@ public class StudentPortalController {
         model.addAttribute("activeLoanLoad", history.stream().filter(loan -> loan.getStatus() == LoanStatus.ACTIVE).count());
         model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
         model.addAttribute("completedProgress", progress.findForUser(username).stream().filter(item -> item.getPercentComplete() == 100).count());
-        var profile = gamification.findByUser_UsernameIgnoreCase(username).orElse(null);
+        var profile = gamification.findForUser(username).orElse(null);
         model.addAttribute("xp", profile == null ? 0 : profile.getXp());
         model.addAttribute("badge", profile == null ? "New explorer" : profile.getBadge());
         model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
@@ -83,7 +83,7 @@ public class StudentPortalController {
         model.addAttribute("completedBooks", reading.stream().filter(item -> item.getPercentComplete() == 100).count());
         model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
         model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
-        var profile = gamification.findByUser_UsernameIgnoreCase(username).orElse(null);
+        var profile = gamification.findForUser(username).orElse(null);
         model.addAttribute("xp", profile == null ? 0 : profile.getXp());
         model.addAttribute("badge", profile == null ? "New explorer" : profile.getBadge());
         return "student/insights";
