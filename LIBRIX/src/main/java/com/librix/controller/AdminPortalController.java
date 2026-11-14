@@ -16,8 +16,8 @@ public class AdminPortalController {
     @GetMapping({"/admin", "/admin/dashboard"})
     public String dashboard(Model model) {
         var inventory = books.findAll();
-        int totalCopies = inventory.stream().mapToInt(LibraryBook::getTotalCopies).sum();
-        int availableCopies = inventory.stream().mapToInt(LibraryBook::getAvailableCopies).sum();
+        int totalCopies = inventory.stream().mapToInt(book -> book.getTotalCopies()).sum();
+        int availableCopies = inventory.stream().mapToInt(book -> book.getAvailableCopies()).sum();
         model.addAttribute("totalBooks", books.count());
         model.addAttribute("availableCopies", availableCopies);
         model.addAttribute("inventoryUtilization", totalCopies == 0 ? 0 : (100 * (totalCopies - availableCopies) / totalCopies));
@@ -41,8 +41,8 @@ public class AdminPortalController {
     @GetMapping("/admin/insights")
     public String insights(Model model) {
         var inventory = books.findAll();
-        int totalCopies = inventory.stream().mapToInt(LibraryBook::getTotalCopies).sum();
-        int availableCopies = inventory.stream().mapToInt(LibraryBook::getAvailableCopies).sum();
+        int totalCopies = inventory.stream().mapToInt(book -> book.getTotalCopies()).sum();
+        int availableCopies = inventory.stream().mapToInt(book -> book.getAvailableCopies()).sum();
         model.addAttribute("inventoryUtilization", totalCopies == 0 ? 0 : (100 * (totalCopies - availableCopies) / totalCopies));
         model.addAttribute("todaySeats", seatBookings.findTop100ByOrderByBookingDateDescStartTimeDesc().stream()
                 .filter(booking -> booking.getBookingDate().equals(LocalDate.now()) && booking.getStatus() == SeatBookingStatus.CONFIRMED).count());

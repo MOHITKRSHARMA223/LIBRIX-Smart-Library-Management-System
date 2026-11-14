@@ -52,7 +52,7 @@ public class StudentPortalController {
         model.addAttribute("today", today);
         model.addAttribute("attentionLoans", history.stream()
                 .filter(loan -> loan.getStatus() == LoanStatus.ACTIVE && !loan.getDueAt().isAfter(today.plusDays(3)))
-                .sorted(Comparator.comparing(Loan::getDueAt))
+                .sorted(Comparator.comparing((Loan loan) -> loan.getDueAt()))
                 .limit(5)
                 .toList());
         model.addAttribute("history", history);
@@ -63,13 +63,13 @@ public class StudentPortalController {
         model.addAttribute("studyPlan", plan.stream().limit(3).toList());
         model.addAttribute("todayPlanCount", plan.stream().filter(item -> item.getScheduledDate().equals(LocalDate.now()) && !item.isCompleted()).count());
         model.addAttribute("activeLoanLoad", history.stream().filter(loan -> loan.getStatus() == LoanStatus.ACTIVE).count());
-        model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
+        model.addAttribute("averageProgress", progress.findForUser(username).stream().mapToInt(item -> item.getPercentComplete()).average().orElse(0));
         model.addAttribute("completedProgress", progress.findForUser(username).stream().filter(item -> item.getPercentComplete() == 100).count());
         var profile = gamification.findForUser(username).orElse(null);
         model.addAttribute("xp", profile == null ? 0 : profile.getXp());
         model.addAttribute("badge", profile == null ? "New explorer" : profile.getBadge());
-        model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
-        model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
+        model.addAttribute("completedPlans", plan.stream().filter(item -> item.isCompleted()).count());
+        model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(item -> item.getDurationMinutes()).sum());
         model.addAttribute("nextSeatBooking", seatBookings.findForUser(username).stream()
                 .filter(booking -> booking.getStatus() == SeatBookingStatus.CONFIRMED && !booking.getBookingDate().isBefore(LocalDate.now())).findFirst().orElse(null));
         return "student/dashboard";
@@ -79,7 +79,7 @@ public class StudentPortalController {
         String username = authentication.getName();
         var plan = studyPlan.findForUser(username);
         var reading = progress.findForUser(username);
-        model.addAttribute("averageProgress", reading.stream().mapToInt(ReadingProgress::getPercentComplete).average().orElse(0));
+        model.addAttribute("averageProgress", reading.stream().mapToInt(item -> item.getPercentComplete()).average().orElse(0));
         model.addAttribute("completedBooks", reading.stream().filter(item -> item.getPercentComplete() == 100).count());
         model.addAttribute("completedPlans", plan.stream().filter(StudyPlanItem::isCompleted).count());
         model.addAttribute("plannedMinutes", plan.stream().filter(item -> !item.isCompleted()).mapToInt(StudyPlanItem::getDurationMinutes).sum());
