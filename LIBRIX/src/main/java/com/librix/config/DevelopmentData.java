@@ -51,7 +51,19 @@ public class DevelopmentData {
 
     private static AppUser user(AppUserRepository users, PasswordEncoder encoder, String username, Role role, String password) {
         return users.findByUsernameIgnoreCase(username)
-                .orElseGet(() -> users.save(new AppUser(username, encoder.encode(password), role)));
+                .map(existing -> {
+                    if (role == Role.SUPER_ADMIN || role == Role.LIBRARIAN) {
+                        existing.setActive(true);
+                        existing.setPasswordHash(encoder.encode(password));
+                        return users.save(existing);
+                    }
+                    return existing;
+                })
+                .orElseGet(() -> {
+                    AppUser created = new AppUser(username, encoder.encode(password), role);
+                    created.setActive(true);
+                    return users.save(created);
+                });
     }
 
     private static LibraryMember member(LibraryMemberRepository members, AppUser user, String name, String email, String phone) {
